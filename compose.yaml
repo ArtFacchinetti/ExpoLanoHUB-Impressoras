@@ -1,0 +1,10 @@
+services:
+  api:
+    build: .
+    ports:
+      - "127.0.0.1:3000:3000"
+
+  snmp-check:
+    build: .
+    env_file: .env
+    command: ["node", "dist/cli/snmp-check.js"]

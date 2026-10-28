@@ -1,0 +1,21 @@
+{
+  "name": "ti-hub-printers",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "snmp:check": "node dist/cli/snmp-check.js"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "dependencies": {
+    "net-snmp": "3.29.2"
+  },
+  "devDependencies": {
+    "@types/net-snmp": "3.23.0",
+    "@types/node": "^24.0.0",
+    "typescript": "~5.9.3"
+  }
+}
