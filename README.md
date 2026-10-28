@@ -12,7 +12,7 @@ Node.js no Windows é opcional para este teste: o contêiner instala as dependê
 
 ## Estado da validação
 
-Em 28/10/2026, a consulta de `sysDescr` a `192.168.0.51` funcionou no Windows e identificou uma `RICOH Aficio SP 3510SF V2.10`. A consulta **dentro do Docker ainda não foi executada**, pois Docker Desktop não está instalado nesta máquina.
+Em 28/10/2026, a consulta de `sysDescr` a `192.168.0.51` funcionou tanto no Windows quanto dentro do Docker. O contêiner recebeu a descrição `RICOH Aficio SP 3510SF V2.10` via SNMP v2c em UDP 161. A execução com `docker compose run --rm snmp-check` terminou com código de saída zero.
 
 ## Executar
 
@@ -45,4 +45,4 @@ Se houver timeout, verifique o IP, a comunidade SNMP, o acesso UDP 161 e as regr
 
 ## Próxima etapa
 
-Depois de validar o acesso SNMP, expandir `src/modules/printers` com normalização, persistência e agendamento. O plano acordado para a persistência é Prisma com PostgreSQL; esses serviços serão adicionados quando a comunicação com a impressora estiver confirmada.
+Com o acesso SNMP validado, a próxima etapa é expandir `src/modules/printers` com consultas de status, normalização, persistência e agendamento. O plano acordado para a persistência é Prisma com PostgreSQL.
