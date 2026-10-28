@@ -1,0 +1,66 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Printer {
+  id          String          @id @default(uuid()) @db.Uuid
+  ip          String          @unique
+  description String?
+  enabled     Boolean         @default(true)
+  createdAt   DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+  status      PrinterStatus?
+  events      PrinterEvent[]
+  metrics     PrinterMetric[]
+
+  @@map("printers")
+}
+
+model PrinterStatus {
+  printerId           String    @id @map("printer_id") @db.Uuid
+  printer             Printer   @relation(fields: [printerId], references: [id], onDelete: Cascade)
+  online              Boolean?
+  printerState        String?   @map("printer_state")
+  printerStateCode    Int?      @map("printer_state_code")
+  display             String?
+  uptimeTicks         BigInt?   @map("uptime_ticks")
+  counters            Json?
+  supplies            Json?
+  consecutiveFailures Int       @default(0) @map("consecutive_failures")
+  lastPoll            DateTime? @map("last_poll") @db.Timestamptz(3)
+  lastSuccess         DateTime? @map("last_success") @db.Timestamptz(3)
+  lastFailure         DateTime? @map("last_failure") @db.Timestamptz(3)
+  lastChange          DateTime? @map("last_change") @db.Timestamptz(3)
+  lastError           String?   @map("last_error")
+
+  @@map("printer_status")
+}
+
+model PrinterEvent {
+  id        String   @id @default(uuid()) @db.Uuid
+  printerId String   @map("printer_id") @db.Uuid
+  printer   Printer  @relation(fields: [printerId], references: [id], onDelete: Cascade)
+  timestamp DateTime @default(now()) @db.Timestamptz(3)
+  type      String
+  changes   Json
+
+  @@index([printerId, timestamp])
+  @@map("printer_events")
+}
+
+model PrinterMetric {
+  id        String   @id @default(uuid()) @db.Uuid
+  printerId String   @map("printer_id") @db.Uuid
+  printer   Printer  @relation(fields: [printerId], references: [id], onDelete: Cascade)
+  timestamp DateTime @default(now()) @db.Timestamptz(3)
+  values    Json
+
+  @@index([printerId, timestamp])
+  @@map("printer_metrics")
+}

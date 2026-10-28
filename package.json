@@ -1,21 +1,30 @@
 {
   "name": "ti-hub-printers",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "db:generate": "prisma generate",
+    "db:deploy": "prisma migrate deploy",
     "start": "node dist/server.js",
-    "snmp:check": "node dist/cli/snmp-check.js"
+    "snmp:check": "node dist/cli/snmp-check.js",
+    "test": "npm run build && node --test dist/modules/printers/normalizer.test.js"
   },
   "engines": {
     "node": ">=24"
   },
   "dependencies": {
-    "net-snmp": "3.29.2"
+    "@prisma/adapter-pg": "7.10.1",
+    "@prisma/client": "7.10.1",
+    "dotenv": "18.0.9",
+    "net-snmp": "3.29.2",
+    "pg": "8.23.1"
   },
   "devDependencies": {
     "@types/net-snmp": "3.23.0",
     "@types/node": "^24.0.0",
+    "@types/pg": "8.23.1",
+    "prisma": "7.10.1",
     "typescript": "~5.9.3"
   }
 }

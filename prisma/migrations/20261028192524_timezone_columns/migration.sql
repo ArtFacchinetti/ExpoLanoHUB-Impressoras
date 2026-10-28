@@ -1,0 +1,15 @@
+-- AlterTable
+ALTER TABLE "printer_events" ALTER COLUMN "timestamp" SET DATA TYPE TIMESTAMPTZ(3);
+
+-- AlterTable
+ALTER TABLE "printer_metrics" ALTER COLUMN "timestamp" SET DATA TYPE TIMESTAMPTZ(3);
+
+-- AlterTable
+ALTER TABLE "printer_status" ALTER COLUMN "last_poll" SET DATA TYPE TIMESTAMPTZ(3),
+ALTER COLUMN "last_success" SET DATA TYPE TIMESTAMPTZ(3),
+ALTER COLUMN "last_failure" SET DATA TYPE TIMESTAMPTZ(3),
+ALTER COLUMN "last_change" SET DATA TYPE TIMESTAMPTZ(3);
+
+-- AlterTable
+ALTER TABLE "printers" ALTER COLUMN "created_at" SET DATA TYPE TIMESTAMPTZ(3),
+ALTER COLUMN "updated_at" SET DATA TYPE TIMESTAMPTZ(3);
