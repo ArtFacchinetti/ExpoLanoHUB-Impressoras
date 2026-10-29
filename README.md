@@ -12,7 +12,9 @@ Na primeira execução, copie o exemplo e edite `.env`:
 Copy-Item .env.example .env
 ```
 
-Defina `PRINTER_HOSTS` com os IPs separados por vírgula e ajuste `SNMP_COMMUNITY`. Escolha uma senha local para `POSTGRES_PASSWORD` e use a mesma em `DATABASE_URL`. O `.env` é ignorado pelo Git. No workspace atual, ele já está configurado com as cinco impressoras `192.168.0.50` a `.54`.
+Defina `PRINTER_HOSTS` com os IPs separados por vírgula e ajuste `SNMP_COMMUNITY`. Escolha uma senha local para `POSTGRES_PASSWORD` e use a mesma em `DATABASE_URL`. O `.env` é ignorado pelo Git. No workspace atual, ele está configurado com os IPs `192.168.0.50` a `.56`; `.55` está cadastrada, mas não respondeu ao SNMP no teste de 29/10/2026.
+
+`PRINTER_HOSTS` é a lista cadastrada na inicialização. `SNMP_HOST` serve apenas ao comando de diagnóstico `snmp-check`; mudar `SNMP_HOST` não adiciona uma impressora à coleta. Para adicionar um IP enquanto a API está rodando, use `POST /printers`. O cadastro fica no banco e o agendador passará a consultá-lo. Mantenha também o IP em `PRINTER_HOSTS` para documentar a configuração local.
 
 Suba o banco, aplique as migrações e inicie a API:
 
@@ -32,7 +34,7 @@ Para ver os registros diretamente no PostgreSQL:
 docker compose exec db psql -U ti_hub -d ti_hub -c 'SELECT count(*) FROM printer_status;'
 ```
 
-Para parar os serviços, use `docker compose down`. O volume do PostgreSQL permanece, preservando os dados.
+Para parar os serviços, use `docker compose down`. O banco usa o volume nomeado `impressoras_postgres_data`; ele permanece quando o contêiner para ou é recriado. `docker compose down -v` remove esse volume e os dados. O volume não substitui um backup externo, que ainda precisa ser configurado antes de usar o sistema como fonte crítica de relatórios.
 
 ## API local
 
